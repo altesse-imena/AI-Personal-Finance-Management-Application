@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles inspired by Stripe */
+body {
+  @apply bg-white text-secondary-800 font-sans;
+}
+
+.container {
+  @apply px-4 mx-auto max-w-7xl;
+}
+
+.btn {
+  @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium transition-colors rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2;
+}
+
+.btn-primary {
+  @apply text-white bg-primary-600 hover:bg-primary-700 focus:ring-primary-500;
+}
+
+.btn-secondary {
+  @apply text-secondary-700 bg-secondary-100 hover:bg-secondary-200 focus:ring-secondary-500;
+}
+
+.btn-danger {
+  @apply text-white bg-danger hover:bg-red-700 focus:ring-red-500;
+}
+
+.card {
+  @apply p-6 bg-white rounded-xl shadow-stripe-sm;
+}
+
+.input {
+  @apply block w-full px-3 py-2 placeholder-secondary-400 border border-secondary-300 rounded-md shadow-sm focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm;
+}
+
+.label {
+  @apply block text-sm font-medium text-secondary-700;
+}
+
+.badge {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+
+.badge-success {
+  @apply bg-green-100 text-green-800;
+}
+
+.badge-warning {
+  @apply bg-yellow-100 text-yellow-800;
+}
+
+.badge-danger {
+  @apply bg-red-100 text-red-800;
+}
+
+/* Stripe-inspired gradient backgrounds */
+.bg-gradient-primary {
+  background: linear-gradient(135deg, #6e8efb 0%, #a777e3 100%);
+}
+
+.bg-gradient-secondary {
+  background: linear-gradient(135deg, #8e9eab 0%, #eef2f3 100%);
+}
+
+/* Stripe-inspired animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Staggered animation for lists */
+.stagger-item {
+  opacity: 0;
+}
+
+.stagger-item:nth-child(1) { animation: fadeIn 0.5s ease-out 0.1s forwards; }
+.stagger-item:nth-child(2) { animation: fadeIn 0.5s ease-out 0.2s forwards; }
+.stagger-item:nth-child(3) { animation: fadeIn 0.5s ease-out 0.3s forwards; }
+.stagger-item:nth-child(4) { animation: fadeIn 0.5s ease-out 0.4s forwards; }
+.stagger-item:nth-child(5) { animation: fadeIn 0.5s ease-out 0.5s forwards; }
+.stagger-item:nth-child(6) { animation: fadeIn 0.5s ease-out 0.6s forwards; }
+.stagger-item:nth-child(7) { animation: fadeIn 0.5s ease-out 0.7s forwards; }
+.stagger-item:nth-child(8) { animation: fadeIn 0.5s ease-out 0.8s forwards; }
+.stagger-item:nth-child(9) { animation: fadeIn 0.5s ease-out 0.9s forwards; }
+.stagger-item:nth-child(10) { animation: fadeIn 0.5s ease-out 1s forwards; }
