@@ -5,7 +5,9 @@ import {
   signInWithGoogle, 
   logoutUser, 
   getCurrentUser,
-  onAuthStateChange
+  onAuthStateChange,
+  updateUserEmail,
+  updateUserPassword
 } from '../utils/firebase';
 
 // Create the context
@@ -62,6 +64,26 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const updateEmail = async (newEmail) => {
+    try {
+      setError(null);
+      await updateUserEmail(newEmail);
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    }
+  };
+
+  const updatePassword = async (newPassword) => {
+    try {
+      setError(null);
+      await updateUserPassword(newPassword);
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    }
+  };
+
   const logout = async () => {
     try {
       setError(null);
@@ -85,6 +107,8 @@ export const AuthProvider = ({ children }) => {
     signup,
     login,
     loginWithGoogle,
+    updateEmail,
+    updatePassword,
     logout,
     getUser
   };

@@ -8,7 +8,11 @@ import {
   signOut, 
   onAuthStateChanged,
   GoogleAuthProvider,
-  signInWithPopup
+  signInWithPopup,
+  updateEmail,
+  updatePassword,
+  reauthenticateWithCredential,
+  EmailAuthProvider
 } from 'firebase/auth';
 
 // Your web app's Firebase configuration
@@ -88,19 +92,49 @@ const onAuthStateChange = (callback) => {
   return onAuthStateChanged(auth, callback);
 };
 
+// Update user email
+const updateUserEmail = async (newEmail) => {
+  try {
+    const user = auth.currentUser;
+    if (!user) throw new Error('No user is currently logged in');
+    
+    await updateEmail(user, newEmail);
+    return true;
+  } catch (error) {
+    console.error('Error updating email:', error.message);
+    throw error;
+  }
+};
+
+// Update user password
+const updateUserPassword = async (newPassword) => {
+  try {
+    const user = auth.currentUser;
+    if (!user) throw new Error('No user is currently logged in');
+    
+    await updatePassword(user, newPassword);
+    return true;
+  } catch (error) {
+    console.error('Error updating password:', error.message);
+    throw error;
+  }
+};
+
 // Connect to Firebase emulator in development mode
 if (process.env.NODE_ENV === 'development') {
   console.log('Using Firebase in development mode');
 }
 
-export { 
-  app, 
-  db, 
+export {
+  app,
+  db,
   auth, 
   registerUser, 
   loginUser, 
   signInWithGoogle,
   logoutUser, 
   getCurrentUser, 
-  onAuthStateChange 
+  onAuthStateChange,
+  updateUserEmail,
+  updateUserPassword
 };
