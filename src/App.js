@@ -1,17 +1,12 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { 
-  SignIn, 
-  SignUp 
-} from '@clerk/clerk-react';
 
 // Import components
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import AuthWrapper from './components/AuthWrapper';
-
-// Import custom Clerk appearance
-import clerkAppearance from './utils/clerkAppearance';
+import PrivateRoute from './components/auth/PrivateRoute';
+import SignIn from './components/auth/SignIn';
+import SignUp from './components/auth/SignUp';
 
 // Import pages
 import Dashboard from './pages/Dashboard';
@@ -34,39 +29,19 @@ function App() {
           {/* Public routes */}
           <Route path="/" element={<LandingPage />} />
           <Route 
-            path="/sign-in/*" 
+            path="/sign-in" 
             element={
-              <AuthWrapper requireAuth={false}>
-                <div className="flex justify-center items-center min-h-[calc(100vh-200px)] px-4">
-                  <div className="w-full max-w-md">
-                    <SignIn 
-                      routing="path" 
-                      path="/sign-in" 
-                      appearance={clerkAppearance}
-                      redirectUrl="/dashboard"
-                      signUpUrl="/sign-up"
-                    />
-                  </div>
-                </div>
-              </AuthWrapper>
+              <div className="flex justify-center items-center min-h-[calc(100vh-200px)] px-4">
+                <SignIn />
+              </div>
             } 
           />
           <Route 
-            path="/sign-up/*" 
+            path="/sign-up" 
             element={
-              <AuthWrapper requireAuth={false}>
-                <div className="flex justify-center items-center min-h-[calc(100vh-200px)] px-4">
-                  <div className="w-full max-w-md">
-                    <SignUp 
-                      routing="path" 
-                      path="/sign-up" 
-                      appearance={clerkAppearance}
-                      redirectUrl="/dashboard"
-                      signInUrl="/sign-in"
-                    />
-                  </div>
-                </div>
-              </AuthWrapper>
+              <div className="flex justify-center items-center min-h-[calc(100vh-200px)] px-4">
+                <SignUp />
+              </div>
             } 
           />
           <Route path="*" element={<Navigate to="/" replace />} />
@@ -75,49 +50,49 @@ function App() {
           <Route 
             path="/dashboard" 
             element={
-              <AuthWrapper requireAuth={true}>
+              <PrivateRoute>
                 <Dashboard />
-              </AuthWrapper>
+              </PrivateRoute>
             } 
           />
           <Route 
             path="/goals" 
             element={
-              <AuthWrapper requireAuth={true}>
+              <PrivateRoute>
                 <Goals />
-              </AuthWrapper>
+              </PrivateRoute>
             } 
           />
           <Route 
             path="/transactions" 
             element={
-              <AuthWrapper requireAuth={true}>
+              <PrivateRoute>
                 <Transactions />
-              </AuthWrapper>
+              </PrivateRoute>
             } 
           />
           <Route 
             path="/transactions/new" 
             element={
-              <AuthWrapper requireAuth={true}>
+              <PrivateRoute>
                 <AddTransaction />
-              </AuthWrapper>
+              </PrivateRoute>
             } 
           />
           <Route 
             path="/insights" 
             element={
-              <AuthWrapper requireAuth={true}>
+              <PrivateRoute>
                 <Insights />
-              </AuthWrapper>
+              </PrivateRoute>
             } 
           />
           <Route 
             path="/settings" 
             element={
-              <AuthWrapper requireAuth={true}>
+              <PrivateRoute>
                 <Settings />
-              </AuthWrapper>
+              </PrivateRoute>
             } 
           />
         </Routes>

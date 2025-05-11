@@ -1,19 +1,26 @@
 // Firebase configuration
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
-import { getAuth, connectAuthEmulator } from 'firebase/auth';
+import { 
+  getAuth, 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged,
+  GoogleAuthProvider,
+  signInWithPopup
+} from 'firebase/auth';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-// Using demo configuration for development purposes
 const firebaseConfig = {
-  apiKey: "AIzaSyDemoKeyForDevelopmentOnly-ThisIsNotReal",
-  authDomain: "demo-project.firebaseapp.com",
-  projectId: "demo-project",
-  storageBucket: "demo-project.appspot.com",
-  messagingSenderId: "123456789012",
-  appId: "1:123456789012:web:abcdef1234567890",
-  measurementId: "G-DEMO12345"
+  apiKey: "AIzaSyA8QX7pn02ctS7BQMl1mAk4uiZYCQkO2WA",
+  authDomain: "lockedin-e0133.firebaseapp.com",
+  projectId: "lockedin-e0133",
+  storageBucket: "lockedin-e0133.firebasestorage.app",
+  messagingSenderId: "249457445170",
+  appId: "1:249457445170:web:15f11b88cb4f1b89cf6f2b",
+  measurementId: "G-4EKFQ6Z5ZK"
 };
 
 // Initialize Firebase
@@ -21,13 +28,79 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
+// Initialize Google Auth Provider
+const googleProvider = new GoogleAuthProvider();
+googleProvider.setCustomParameters({
+  prompt: 'select_account'
+});
+
+// Firebase Authentication Helper Functions
+const registerUser = async (email, password) => {
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    return userCredential.user;
+  } catch (error) {
+    console.error('Error registering user:', error.message);
+    throw error;
+  }
+};
+
+const loginUser = async (email, password) => {
+  try {
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    return userCredential.user;
+  } catch (error) {
+    console.error('Error logging in:', error.message);
+    throw error;
+  }
+};
+
+const signInWithGoogle = async () => {
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    // This gives you a Google Access Token. You can use it to access the Google API.
+    // const credential = GoogleAuthProvider.credentialFromResult(result);
+    // If you need to use the token later, uncomment the line below
+    // const token = credential.accessToken;
+    // The signed-in user info.
+    return result.user;
+  } catch (error) {
+    console.error('Error signing in with Google:', error.message);
+    throw error;
+  }
+};
+
+const logoutUser = async () => {
+  try {
+    await signOut(auth);
+    return true;
+  } catch (error) {
+    console.error('Error logging out:', error.message);
+    throw error;
+  }
+};
+
+const getCurrentUser = () => {
+  return auth.currentUser;
+};
+
+const onAuthStateChange = (callback) => {
+  return onAuthStateChanged(auth, callback);
+};
+
 // Connect to Firebase emulator in development mode
 if (process.env.NODE_ENV === 'development') {
-  // Using Firebase emulators for development
-  console.log('Using Firebase emulators for development');
-  // Uncomment these lines when using Firebase emulators
-  // connectAuthEmulator(auth, 'http://localhost:9099');
-  // connectFirestoreEmulator(db, 'localhost', 8080);
+  console.log('Using Firebase in development mode');
 }
 
-export { app, db, auth };
+export { 
+  app, 
+  db, 
+  auth, 
+  registerUser, 
+  loginUser, 
+  signInWithGoogle,
+  logoutUser, 
+  getCurrentUser, 
+  onAuthStateChange 
+};

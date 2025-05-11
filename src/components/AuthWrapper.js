@@ -1,18 +1,10 @@
 import React from 'react';
+import { useUser } from '@clerk/clerk-react';
 import { Navigate } from 'react-router-dom';
-
-// Mock user hook for development
-const useMockUser = () => {
-  // Always return signed in for development
-  return { isSignedIn: true, isLoaded: true, user: { id: 'mock-user-id' } };
-};
 
 // A wrapper component to handle protected routes
 const AuthWrapper = ({ children, requireAuth = true }) => {
-  // Using mock user data for development
-  const { isSignedIn, isLoaded } = useMockUser();
-  
-  console.log('AuthWrapper: Using mock authentication');
+  const { isSignedIn, isLoaded } = useUser();
   
   // Show loading state while initializing (shouldn't happen with mock)
   if (!isLoaded) {

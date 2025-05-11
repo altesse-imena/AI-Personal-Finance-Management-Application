@@ -1,34 +1,25 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiMenu, FiX, FiUser, FiLogOut } from 'react-icons/fi';
-// Using mock components instead of Clerk
-// import { useUser, useClerk, SignedIn, SignedOut } from '@clerk/clerk-react';
+import { useAuth } from '../contexts/AuthContext';
 import Logo from './Logo';
-
-// Mock components for development
-const SignedIn = ({ children }) => children;
-const SignedOut = () => null; // Don't show sign out state in development
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
-  
-  // Mock user data for development
-  const user = { firstName: 'Demo', lastName: 'User' };
-  
-  // Mock signOut function
-  const signOut = () => {
-    console.log('Mock sign out');
-    return Promise.resolve();
-  };
+  const { currentUser, logout } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
   const handleLogout = async () => {
-    await signOut();
-    navigate('/');
+    try {
+      await logout();
+      navigate('/');
+    } catch (error) {
+      console.error('Failed to log out:', error);
+    }
   };
 
   return (
@@ -42,7 +33,7 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            <SignedIn>
+            {currentUser ? (
               <>
                 <Link to="/dashboard" className="text-secondary-600 hover:text-primary-600 transition-colors">
                   Dashboard
@@ -59,7 +50,7 @@ const Navbar = () => {
                 <div className="relative group">
                   <button className="flex items-center text-secondary-600 hover:text-primary-600 transition-colors">
                     <FiUser className="mr-1" />
-                    {user?.firstName || 'Account'}
+                    {currentUser?.email?.split('@')[0] || 'Account'}
                   </button>
                   <div className="absolute right-0 w-48 mt-2 py-2 bg-white rounded-md shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                     <Link to="/settings" className="block px-4 py-2 text-sm text-secondary-700 hover:bg-secondary-100">
@@ -74,8 +65,7 @@ const Navbar = () => {
                   </div>
                 </div>
               </>
-            </SignedIn>
-            <SignedOut>
+            ) : (
               <>
                 <Link to="/sign-in" className="text-secondary-600 hover:text-primary-600 transition-colors">
                   Login
@@ -84,7 +74,7 @@ const Navbar = () => {
                   Get Started
                 </Link>
               </>
-            </SignedOut>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -103,7 +93,7 @@ const Navbar = () => {
       {isMenuOpen && (
         <div className="md:hidden bg-white py-4 px-4 shadow-inner">
           <div className="flex flex-col space-y-4">
-            <SignedIn>
+            {currentUser ? (
               <>
                 <Link
                   to="/dashboard"
@@ -142,7 +132,7 @@ const Navbar = () => {
                 </Link>
                 <button
                   onClick={() => {
-                    console.log('Mock logout clicked');
+                    handleLogout();
                     toggleMenu();
                   }}
                   className="flex items-center text-secondary-600 hover:text-primary-600 transition-colors"
@@ -150,8 +140,7 @@ const Navbar = () => {
                   <FiLogOut className="mr-2" /> Logout
                 </button>
               </>
-            </SignedIn>
-            <SignedOut>
+            ) : (
               <>
                 <Link
                   to="/sign-in"
@@ -168,7 +157,7 @@ const Navbar = () => {
                   Get Started
                 </Link>
               </>
-            </SignedOut>
+            )}
           </div>
         </div>
       )}
