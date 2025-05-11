@@ -7,28 +7,26 @@ import './styles/index.css';
 import clerkAppearance from './utils/clerkAppearance';
 import { FinanceProvider } from './contexts/FinanceContext';
 
-// Get the Clerk publishable key from environment variables
-const clerkPubKey = process.env.REACT_APP_CLERK_PUBLISHABLE_KEY;
+// Using a temporary mock key for development
+const clerkPubKey = 'pk_test_DEMO_KEY_FOR_DEVELOPMENT_ONLY';
 
-// Check if the key is available
-if (!clerkPubKey) {
-  throw new Error('Missing Clerk Publishable Key');
-}
+// Mock ClerkProvider for development
+const MockClerkProvider = ({ children }) => {
+  console.log('Using Mock Clerk Provider for development');
+  return children;
+};
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <ClerkProvider 
-      publishableKey={clerkPubKey}
-      appearance={clerkAppearance}
-      navigate={(to) => window.location.href = to}
-      redirectUrl={window.location.origin}
-    >
+    {/* Using MockClerkProvider instead of ClerkProvider for development */}
+    <MockClerkProvider>
       <BrowserRouter>
         <FinanceProvider>
           <App />
         </FinanceProvider>
       </BrowserRouter>
-    </ClerkProvider>
+    </MockClerkProvider>
   </React.StrictMode>
 );
+

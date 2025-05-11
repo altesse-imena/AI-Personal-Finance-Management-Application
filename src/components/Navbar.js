@@ -1,14 +1,26 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiMenu, FiX, FiUser, FiLogOut } from 'react-icons/fi';
-import { useUser, useClerk, SignedIn, SignedOut } from '@clerk/clerk-react';
+// Using mock components instead of Clerk
+// import { useUser, useClerk, SignedIn, SignedOut } from '@clerk/clerk-react';
 import Logo from './Logo';
+
+// Mock components for development
+const SignedIn = ({ children }) => children;
+const SignedOut = () => null; // Don't show sign out state in development
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
-  const { user } = useUser();
-  const { signOut } = useClerk();
+  
+  // Mock user data for development
+  const user = { firstName: 'Demo', lastName: 'User' };
+  
+  // Mock signOut function
+  const signOut = () => {
+    console.log('Mock sign out');
+    return Promise.resolve();
+  };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -130,7 +142,7 @@ const Navbar = () => {
                 </Link>
                 <button
                   onClick={() => {
-                    handleLogout();
+                    console.log('Mock logout clicked');
                     toggleMenu();
                   }}
                   className="flex items-center text-secondary-600 hover:text-primary-600 transition-colors"

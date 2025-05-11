@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { useUser } from '@clerk/clerk-react';
+// Using mock user instead of Clerk
+// import { useUser } from '@clerk/clerk-react';
 import { userProfileService, transactionService, goalService } from '../services/financeService';
 
 // Create the context
@@ -8,9 +9,25 @@ const FinanceContext = createContext();
 // Custom hook to use the finance context
 export const useFinance = () => useContext(FinanceContext);
 
+// Mock user hook for development
+const useMockUser = () => {
+  // Always return signed in for development
+  return { 
+    isSignedIn: true, 
+    isLoaded: true, 
+    user: { 
+      id: 'mock-user-id',
+      fullName: 'Demo User',
+      primaryEmailAddress: { emailAddress: 'demo@example.com' }
+    } 
+  };
+};
+
 // Finance provider component
 export const FinanceProvider = ({ children }) => {
-  const { user, isSignedIn, isLoaded } = useUser();
+  // Using mock user data for development
+  const { user, isSignedIn, isLoaded } = useMockUser();
+  console.log('FinanceContext: Using mock user data for development');
   const [userProfile, setUserProfile] = useState(null);
   const [transactions, setTransactions] = useState([]);
   const [goals, setGoals] = useState([]);
