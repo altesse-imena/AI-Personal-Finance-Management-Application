@@ -1,13 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FiGithub, FiTwitter, FiLinkedin } from 'react-icons/fi';
+import { useTheme } from '../contexts/ThemeContext';
 import Logo from './Logo';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const { darkMode } = useTheme();
 
   return (
-    <footer className="bg-secondary-900 text-white py-12">
+    <footer className="bg-secondary-900 text-white py-12 dark:bg-gray-950 transition-colors duration-200">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Logo and description */}

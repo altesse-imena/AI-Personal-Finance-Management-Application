@@ -7,6 +7,7 @@ import Footer from './components/Footer';
 import PrivateRoute from './components/auth/PrivateRoute';
 import SignIn from './components/auth/SignIn';
 import SignUp from './components/auth/SignUp';
+import { ThemeProvider } from './contexts/ThemeContext';
 
 // Import pages
 import Dashboard from './pages/Dashboard';
@@ -27,8 +28,9 @@ import RecurringTransactions from './pages/RecurringTransactions';
 
 function App() {
   return (
-    <div className="flex flex-col min-h-screen">
-      <Navbar />
+    <ThemeProvider>
+      <div className="flex flex-col min-h-screen dark:bg-gray-900 dark:text-white transition-colors duration-200">
+        <Navbar />
       
       <main className="flex-grow">
         <Routes>
@@ -139,7 +141,8 @@ function App() {
       </main>
       
       <Footer />
-    </div>
+      </div>
+    </ThemeProvider>
   );
 }
 

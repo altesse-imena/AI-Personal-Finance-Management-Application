@@ -346,302 +346,248 @@ const Dashboard = () => {
               <div>
                 <p className="text-secondary-500 text-sm">Current Balance</p>
                 <h2 className="text-3xl font-bold text-secondary-900">${balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h2>
-        {isLoading ? (
-          <div className="flex justify-center items-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
-          </div>
-        ) : error ? (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-            <p>{error}</p>
-          </div>
-        ) : (
-          <>
-            {/* Financial Summary Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-              {/* Balance Card */}
-              <div className="card bg-white rounded-xl shadow-stripe-sm">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <p className="text-secondary-500 text-sm">Current Balance</p>
-                    <h2 className="text-3xl font-bold text-secondary-900">${balance.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h2>
-                  </div>
-                  <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
-                    <FiDollarSign className="text-primary-600" />
-                  </div>
-                </div>
-                <p className="text-sm text-secondary-500">Updated today</p>
               </div>
-
-              {/* Income Card */}
-              <div className="card bg-white rounded-xl shadow-stripe-sm">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <p className="text-secondary-500 text-sm">Monthly Income</p>
-                    <h2 className="text-3xl font-bold text-secondary-900">${income.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h2>
-                  </div>
-                  <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
-                    <FiArrowUp className="text-success" />
-                  </div>
-                </div>
-                <p className="text-sm text-success flex items-center">
-                  <FiArrowUp className="mr-1" /> 5% from last month
-                </p>
-              </div>
-
-              {/* Expenses Card */}
-              <div className="card bg-white rounded-xl shadow-stripe-sm">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <p className="text-secondary-500 text-sm">Monthly Expenses</p>
-                    <h2 className="text-3xl font-bold text-secondary-900">${expenses.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h2>
-                  </div>
-                  <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
-                    <FiArrowDown className="text-danger" />
-                  </div>
-                </div>
-                <p className="text-sm text-danger flex items-center">
-                  <FiArrowDown className="mr-1" /> 3% from last month
-                </p>
-              </div>
-
-              {/* Savings Card */}
-              <div className="card bg-white rounded-xl shadow-stripe-sm">
-                <div className="flex justify-between items-start mb-4">
-                  <div>
-                    <p className="text-secondary-500 text-sm">Monthly Savings</p>
-                    <h2 className="text-3xl font-bold text-secondary-900">${savings.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h2>
-                  </div>
-                  <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
-                    <FiTrendingUp className="text-primary-600" />
-                  </div>
-                </div>
-                <p className="text-sm text-success flex items-center">
-                  <FiArrowUp className="mr-1" /> 39% of income
-                </p>
+              <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
+                <FiDollarSign className="text-primary-600" />
               </div>
             </div>
+            <p className="text-sm text-secondary-500">Updated today</p>
+          </div>
 
-            {/* Main Content Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-              {/* Left Column */}
-              <div className="lg:col-span-2 space-y-8">
-                {/* Monthly Balance Chart */}
-                <div className="card bg-white rounded-xl shadow-stripe-sm">
-                  <div className="flex justify-between items-center mb-6">
-                    <h3 className="text-xl font-semibold text-secondary-900">Balance Trend</h3>
-                    <select className="input py-1 px-2 w-auto text-sm">
-                      <option>Last 6 months</option>
-                      <option>Last 12 months</option>
-                      <option>This year</option>
-                    </select>
-                  </div>
-                  <div className="h-64">
-                    <Line 
-                      data={monthlyBalanceData} 
-                      options={{
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                          legend: {
-                            display: false,
-                          },
-                        },
-                        scales: {
-                          y: {
-                            beginAtZero: true,
-                            grid: {
-                              drawBorder: false,
-                            },
-                          },
-                          x: {
-                            grid: {
-                              display: false,
-                            },
-                          },
-                        },
-                      }}
-                    />
-                  </div>
-                </div>
-
-                {/* Income vs Expenses Chart */}
-                <div className="card bg-white rounded-xl shadow-stripe-sm">
-                  <div className="flex justify-between items-center mb-6">
-                    <h3 className="text-xl font-semibold text-secondary-900">Income vs Expenses</h3>
-                    <select className="input py-1 px-2 w-auto text-sm">
-                      <option>Last 6 months</option>
-                      <option>Last 12 months</option>
-                      <option>This year</option>
-                    </select>
-                  </div>
-                  <div className="h-64">
-                    <Bar 
-                      data={incomeVsExpensesData} 
-                      options={{
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                          legend: {
-                            position: 'top',
-                          },
-                        },
-                        scales: {
-                          y: {
-                            beginAtZero: true,
-                            grid: {
-                              drawBorder: false,
-                            },
-                          },
-                          x: {
-                            grid: {
-                              display: false,
-                            },
-                          },
-                        },
-                      }}
-                    />
-                  </div>
-                </div>
-
-                {/* Recent Transactions */}
-                <div className="card bg-white rounded-xl shadow-stripe-sm">
-                  <div className="flex justify-between items-center mb-6">
-                    <h3 className="text-xl font-semibold text-secondary-900">Recent Transactions</h3>
-                    <Link to="/transactions" className="text-primary-600 hover:text-primary-700 text-sm">
-                      View all
-                    </Link>
-                  </div>
-                  <div className="overflow-x-auto">
-                    <table className="min-w-full divide-y divide-secondary-200">
-                      <thead>
-                        <tr>
-                          <th className="px-4 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider">
-                            Description
-                          </th>
-                          <th className="px-4 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider">
-                            Category
-                          </th>
-                          <th className="px-4 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider">
-                            Date
-                          </th>
-                          <th className="px-4 py-3 text-right text-xs font-medium text-secondary-500 uppercase tracking-wider">
-                            Amount
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="bg-white divide-y divide-secondary-100">
-                        {recentTransactions.map((transaction) => (
-                          <tr key={transaction.id} className="hover:bg-secondary-50">
-                            <td className="px-4 py-3 whitespace-nowrap text-sm font-medium text-secondary-900">
-                              {transaction.description}
-                            </td>
-                            <td className="px-4 py-3 whitespace-nowrap text-sm text-secondary-600">
-                              {transaction.category}
-                            </td>
-                            <td className="px-4 py-3 whitespace-nowrap text-sm text-secondary-600">
-                              {new Date(transaction.date).toLocaleDateString()}
-                            </td>
-                            <td className={`px-4 py-3 whitespace-nowrap text-sm font-medium text-right ${
-                              transaction.amount > 0 ? 'text-success' : 'text-danger'
-                            }`}>
-                              {transaction.amount > 0 ? '+' : ''}
-                              ${Math.abs(transaction.amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
+          {/* Income Card */}
+          <div className="card bg-white rounded-xl shadow-stripe-sm">
+            <div className="flex justify-between items-start mb-4">
+              <div>
+                <p className="text-secondary-500 text-sm">Monthly Income</p>
+                <h2 className="text-3xl font-bold text-secondary-900">${income.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h2>
               </div>
+              <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                <FiArrowUp className="text-success" />
+              </div>
+            </div>
+            <p className="text-sm text-success flex items-center">
+              <FiArrowUp className="mr-1" /> 5% from last month
+            </p>
+          </div>
 
-              {/* Right Column */}
-              <div className="space-y-8">
-                {/* AI Recommendations */}
-                <div className="card bg-white rounded-xl shadow-stripe-sm">
-                  <div className="flex items-center mb-6">
-                    <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center mr-3">
-                      <FiTrendingUp className="text-primary-600" />
-                    </div>
-                    <h3 className="text-xl font-semibold text-secondary-900">AI Recommendations</h3>
-                  </div>
-                  <div className="space-y-4">
-                    {recommendations.map((recommendation, index) => (
-                      <div key={index} className="p-3 bg-secondary-50 rounded-lg">
-                        <p className="text-secondary-700">{recommendation}</p>
-                      </div>
-                    ))}
-                  </div>
+          {/* Expenses Card */}
+          <div className="card bg-white rounded-xl shadow-stripe-sm">
+            <div className="flex justify-between items-start mb-4">
+              <div>
+                <p className="text-secondary-500 text-sm">Monthly Expenses</p>
+                <h2 className="text-3xl font-bold text-secondary-900">${expenses.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h2>
+              </div>
+              <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center">
+                <FiArrowDown className="text-danger" />
+              </div>
+            </div>
+            <p className="text-sm text-danger flex items-center">
+              <FiArrowDown className="mr-1" /> 3% from last month
+            </p>
+          </div>
+
+          {/* Savings Card */}
+          <div className="card bg-white rounded-xl shadow-stripe-sm">
+            <div className="flex justify-between items-start mb-4">
+              <div>
+                <p className="text-secondary-500 text-sm">Savings</p>
+                <h2 className="text-3xl font-bold text-secondary-900">${savings.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</h2>
+              </div>
+              <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
+                <FiTrendingUp className="text-blue-600" />
+              </div>
+            </div>
+            <p className="text-sm text-blue-600 flex items-center">
+              <FiArrowUp className="mr-1" /> 8% from last month
+            </p>
+          </div>
+        </div>
+
+        {/* Main Dashboard Content */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left Column */}
+          <div className="lg:col-span-2 space-y-8">
+            {/* Income vs Expenses Chart */}
+            <div className="card bg-white rounded-xl shadow-stripe-sm">
+              <h3 className="text-xl font-semibold text-secondary-900 mb-6">Income vs Expenses</h3>
+              <div className="h-80">
+                <Bar 
+                  data={incomeVsExpensesData} 
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                      legend: {
+                        position: 'top',
+                      },
+                    },
+                    scales: {
+                      y: {
+                        beginAtZero: true,
+                      },
+                    },
+                  }}
+                />
+              </div>
+            </div>
+            
+            {/* Monthly Balance Trend */}
+            <div className="card bg-white rounded-xl shadow-stripe-sm">
+              <h3 className="text-xl font-semibold text-secondary-900 mb-6">Balance Trend</h3>
+              <div className="h-80">
+                <Line 
+                  data={monthlyBalanceData} 
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                      legend: {
+                        display: false,
+                      },
+                    },
+                    scales: {
+                      y: {
+                        beginAtZero: true,
+                      },
+                    },
+                  }}
+                />
+              </div>
+            </div>
+            
+            {/* Recent Transactions */}
+            <div className="card bg-white rounded-xl shadow-stripe-sm">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-xl font-semibold text-secondary-900">Recent Transactions</h3>
+                <Link to="/transactions" className="text-primary-600 hover:text-primary-700 text-sm">
+                  View all
+                </Link>
+              </div>
+              
+              {recentTransactions.length === 0 ? (
+                <div className="text-center py-8">
+                  <p className="text-secondary-500">No transactions yet. Add your first transaction to get started.</p>
+                  <Link to="/transactions/new" className="mt-4 btn btn-primary inline-flex items-center">
+                    <FiPlus className="mr-2" /> Add Transaction
+                  </Link>
                 </div>
-
-                {/* Expense Breakdown */}
-                <div className="card bg-white rounded-xl shadow-stripe-sm">
-                  <h3 className="text-xl font-semibold text-secondary-900 mb-6">Expense Breakdown</h3>
-                  <div className="h-64 flex items-center justify-center">
-                    <Doughnut 
-                      data={expensesByCategoryData} 
-                      options={{
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                          legend: {
-                            position: 'bottom',
-                          },
-                        },
-                      }}
-                    />
-                  </div>
-                </div>
-
-                {/* Financial Goals */}
-                <div className="card bg-white rounded-xl shadow-stripe-sm">
-                  <div className="flex justify-between items-center mb-6">
-                    <h3 className="text-xl font-semibold text-secondary-900">Financial Goals</h3>
-                    <Link to="/goals" className="text-primary-600 hover:text-primary-700 text-sm">
-                      View all
-                    </Link>
-                  </div>
-                  <div className="space-y-6">
-                    {goals.map((goal) => {
-                      const progress = (goal.currentAmount / goal.targetAmount) * 100;
-                      return (
-                        <div key={goal.id} className="space-y-2">
-                          <div className="flex justify-between items-center">
-                            <h4 className="font-medium text-secondary-900">{goal.name}</h4>
-                            <span className="text-sm text-secondary-600">
-                              ${goal.currentAmount.toLocaleString()} / ${goal.targetAmount.toLocaleString()}
-                            </span>
-                          </div>
-                          <div className="w-full bg-secondary-200 rounded-full h-2.5">
-                            <div
-                              className="bg-primary-600 h-2.5 rounded-full"
-                              style={{ width: `${progress}%` }}
-                            ></div>
-                          </div>
-                          <div className="flex justify-between items-center text-xs text-secondary-500">
-                            <span>{progress.toFixed(0)}% complete</span>
-                            <span className="flex items-center">
-                              <FiCalendar className="mr-1" />
-                              Due {new Date(goal.deadline).toLocaleDateString()}
-                            </span>
-                          </div>
+              ) : (
+                <div className="space-y-4">
+                  {recentTransactions.map((transaction) => (
+                    <div key={transaction.id} className="flex justify-between items-center p-3 hover:bg-secondary-50 rounded-lg transition-colors">
+                      <div className="flex items-center">
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center mr-3 ${transaction.amount >= 0 ? 'bg-green-100' : 'bg-red-100'}`}>
+                          {transaction.amount >= 0 ? (
+                            <FiArrowUp className="text-success" />
+                          ) : (
+                            <FiArrowDown className="text-danger" />
+                          )}
                         </div>
-                      );
-                    })}
-                  </div>
-                  <div className="mt-6">
-                    <Link
-                      to="/goals/new"
-                      className="btn btn-secondary w-full flex items-center justify-center"
-                    >
-                      <FiPlus className="mr-2" /> Add New Goal
-                    </Link>
-                  </div>
+                        <div>
+                          <h4 className="font-medium text-secondary-900">{transaction.description}</h4>
+                          <p className="text-sm text-secondary-500">{transaction.category}</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className={`font-medium ${transaction.amount >= 0 ? 'text-success' : 'text-danger'}`}>
+                          {transaction.amount >= 0 ? '+' : ''}{transaction.amount.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+                        </p>
+                        <p className="text-xs text-secondary-500">
+                          {new Date(transaction.date).toLocaleDateString()}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
+              )}
+            </div>
+          </div>
+          
+          {/* Right Column */}
+          <div className="space-y-8">
+            {/* AI Recommendations */}
+            <div className="card bg-white rounded-xl shadow-stripe-sm">
+              <div className="flex items-center mb-6">
+                <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center mr-3">
+                  <FiTrendingUp className="text-primary-600" />
+                </div>
+                <h3 className="text-xl font-semibold text-secondary-900">AI Recommendations</h3>
+              </div>
+              <div className="space-y-4">
+                {recommendations.map((recommendation, index) => (
+                  <div key={index} className="p-3 bg-secondary-50 rounded-lg">
+                    <p className="text-secondary-700">{recommendation}</p>
+                  </div>
+                ))}
               </div>
             </div>
-          </>
-        )}
+
+            {/* Expense Breakdown */}
+            <div className="card bg-white rounded-xl shadow-stripe-sm">
+              <h3 className="text-xl font-semibold text-secondary-900 mb-6">Expense Breakdown</h3>
+              <div className="h-64 flex items-center justify-center">
+                <Doughnut 
+                  data={expensesByCategoryData} 
+                  options={{
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                      legend: {
+                        position: 'bottom',
+                      },
+                    },
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Financial Goals */}
+            <div className="card bg-white rounded-xl shadow-stripe-sm">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-xl font-semibold text-secondary-900">Financial Goals</h3>
+                <Link to="/goals" className="text-primary-600 hover:text-primary-700 text-sm">
+                  View all
+                </Link>
+              </div>
+              <div className="space-y-6">
+                {goals.map((goal) => {
+                  const progress = (goal.currentAmount / goal.targetAmount) * 100;
+                  return (
+                    <div key={goal.id} className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <h4 className="font-medium text-secondary-900">{goal.title}</h4>
+                        <span className="text-sm text-secondary-600">
+                          ${goal.currentAmount.toLocaleString()} / ${goal.targetAmount.toLocaleString()}
+                        </span>
+                      </div>
+                      <div className="w-full bg-secondary-200 rounded-full h-2.5">
+                        <div
+                          className="bg-primary-600 h-2.5 rounded-full"
+                          style={{ width: `${progress}%` }}
+                        ></div>
+                      </div>
+                      <div className="flex justify-between items-center text-xs text-secondary-500">
+                        <span>{progress.toFixed(0)}% complete</span>
+                        <span className="flex items-center">
+                          <FiCalendar className="mr-1" />
+                          Due {new Date(goal.deadline).toLocaleDateString()}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="mt-6">
+                <Link
+                  to="/goals/new"
+                  className="btn btn-secondary w-full flex items-center justify-center"
+                >
+                  <FiPlus className="mr-2" /> Add New Goal
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

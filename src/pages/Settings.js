@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { useFinance } from '../contexts/FinanceContext';
+import { useTheme } from '../contexts/ThemeContext';
 import { FiUser, FiBell, FiLock, FiDollarSign, FiCreditCard, FiToggleLeft, FiToggleRight, FiSave } from 'react-icons/fi';
 
 const Settings = () => {
   const { currentUser, logout, updateEmail, updatePassword } = useAuth();
   const { userProfile, updateProfile } = useFinance();
+  const { darkMode, toggleDarkMode } = useTheme();
   
   // Form states
   const [activeTab, setActiveTab] = useState('account');
@@ -32,7 +34,6 @@ const Settings = () => {
   const [defaultCategory, setDefaultCategory] = useState('Uncategorized');
   
   // App settings
-  const [darkMode, setDarkMode] = useState(false);
   const [compactView, setCompactView] = useState(false);
   const [autoLogout, setAutoLogout] = useState('30');
   
@@ -52,7 +53,6 @@ const Settings = () => {
       setCurrency(preferences.currency || 'USD');
       setBudgetStartDay(preferences.budgetStartDay || '1');
       setDefaultCategory(preferences.defaultCategory || 'Uncategorized');
-      setDarkMode(preferences.darkMode || false);
       setCompactView(preferences.compactView || false);
       setAutoLogout(preferences.autoLogout || '30');
     }
@@ -122,7 +122,7 @@ const Settings = () => {
         currency,
         budgetStartDay,
         defaultCategory,
-        darkMode,
+        darkMode, // This now comes from ThemeContext
         compactView,
         autoLogout
       };
@@ -369,12 +369,12 @@ const Settings = () => {
       <form onSubmit={handlePreferencesUpdate} className="space-y-4">
         <div className="flex items-center justify-between py-3 border-b border-secondary-100">
           <div>
-            <h4 className="font-medium text-secondary-900">Dark Mode</h4>
-            <p className="text-sm text-secondary-500">Use dark theme for the application</p>
+            <h4 className="font-medium text-secondary-900 dark:text-white">Dark Mode</h4>
+            <p className="text-sm text-secondary-500 dark:text-gray-400">Use dark theme for the application</p>
           </div>
           <button 
             type="button" 
-            onClick={() => setDarkMode(!darkMode)}
+            onClick={toggleDarkMode}
             className="text-2xl text-primary-600"
           >
             {darkMode ? <FiToggleRight /> : <FiToggleLeft />}

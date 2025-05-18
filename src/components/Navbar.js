@@ -1,16 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FiMenu, FiX, FiUser, FiLogOut, FiDollarSign, FiCreditCard, FiBarChart2, FiRepeat } from 'react-icons/fi';
 import { useAuth } from '../contexts/AuthContext';
+import { useTheme } from '../contexts/ThemeContext';
 import Logo from './Logo';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const userMenuRef = useRef(null);
   const navigate = useNavigate();
   const { currentUser, logout } = useAuth();
+  const { darkMode } = useTheme();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const toggleUserMenu = () => {
+    setIsUserMenuOpen(!isUserMenuOpen);
   };
 
   const handleLogout = async () => {
@@ -21,9 +29,23 @@ const Navbar = () => {
       console.error('Failed to log out:', error);
     }
   };
+  
+  // Close user menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        setIsUserMenuOpen(false);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
-    <nav className="bg-white shadow-sm">
+    <nav className="bg-white shadow-sm dark:bg-gray-800 dark:text-white transition-colors duration-200">
       <div className="container mx-auto px-4 py-3">
         <div className="flex justify-between items-center">
           {/* Logo */}
@@ -35,64 +57,48 @@ const Navbar = () => {
           <div className="hidden md:flex items-center space-x-8">
             {currentUser ? (
               <>
-                <Link to="/dashboard" className="text-secondary-600 hover:text-primary-600 transition-colors">
-                  Dashboard
-                </Link>
-                <Link to="/goals" className="text-secondary-600 hover:text-primary-600 transition-colors">
-                  Goals
-                </Link>
-                <Link to="/transactions" className="text-secondary-600 hover:text-primary-600 transition-colors">
-                  Transactions
-                </Link>
-                <Link to="/insights" className="text-secondary-600 hover:text-primary-600 transition-colors">
-                  Insights
-                </Link>
-                <div className="relative group">
-                  <button className="flex items-center text-secondary-600 hover:text-primary-600 transition-colors">
-                    More
-                  </button>
-                  <div className="absolute left-0 w-56 mt-2 py-2 bg-white rounded-md shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                    <Link to="/budget" className="flex items-center px-4 py-2 text-sm text-secondary-700 hover:bg-secondary-100">
-                      <FiDollarSign className="mr-2" /> Budget Planning
-                    </Link>
-                    <Link to="/subscriptions" className="flex items-center px-4 py-2 text-sm text-secondary-700 hover:bg-secondary-100">
-                      <FiCreditCard className="mr-2" /> Subscriptions
-                    </Link>
-                    <Link to="/financial-health" className="flex items-center px-4 py-2 text-sm text-secondary-700 hover:bg-secondary-100">
-                      <FiBarChart2 className="mr-2" /> Financial Health
-                    </Link>
-                    <Link to="/recurring-transactions" className="flex items-center px-4 py-2 text-sm text-secondary-700 hover:bg-secondary-100">
-                      <FiRepeat className="mr-2" /> Recurring Transactions
-                    </Link>
-                  </div>
+                <div className="flex items-center space-x-6">
+                  <Link to="/dashboard" className="text-secondary-700 hover:text-primary-600 font-medium dark:text-white dark:hover:text-primary-400">Dashboard</Link>
+                  <Link to="/transactions" className="text-secondary-700 hover:text-primary-600 font-medium dark:text-white dark:hover:text-primary-400">Transactions</Link>
+                  <Link to="/goals" className="text-secondary-700 hover:text-primary-600 font-medium dark:text-white dark:hover:text-primary-400">Goals</Link>
+                  <Link to="/insights" className="text-secondary-700 hover:text-primary-600 font-medium dark:text-white dark:hover:text-primary-400">Insights</Link>
+                  <Link to="/budget" className="text-secondary-700 hover:text-primary-600 font-medium dark:text-white dark:hover:text-primary-400">Budget</Link>
+                  <Link to="/subscriptions" className="text-secondary-700 hover:text-primary-600 font-medium dark:text-white dark:hover:text-primary-400">Subscriptions</Link>
                 </div>
-                <div className="relative group">
-                  <button className="flex items-center text-secondary-600 hover:text-primary-600 transition-colors">
+                
+                {/* User Menu */}
+                <div className="relative" ref={userMenuRef}>
+                  <button
+                    onClick={toggleUserMenu}
+                    className="flex items-center space-x-2 text-secondary-700 hover:text-primary-600 focus:outline-none dark:text-white dark:hover:text-primary-400"
+                  >
                     <FiUser className="mr-1" />
-                    {currentUser?.email?.split('@')[0] || 'Account'}
+                    <span>{currentUser.email?.split('@')[0] || 'Account'}</span>
                   </button>
-                  <div className="absolute right-0 w-48 mt-2 py-2 bg-white rounded-md shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
-                    <Link to="/settings" className="block px-4 py-2 text-sm text-secondary-700 hover:bg-secondary-100">
-                      Settings
-                    </Link>
-                    <button
-                      onClick={handleLogout}
-                      className="flex items-center w-full text-left px-4 py-2 text-sm text-secondary-700 hover:bg-secondary-100"
-                    >
-                      <FiLogOut className="mr-2" /> Logout
-                    </button>
-                  </div>
+                  
+                  {isUserMenuOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 dark:bg-gray-700">
+                      <Link
+                        to="/settings"
+                        className="block px-4 py-2 text-sm text-secondary-700 hover:bg-secondary-50 flex items-center dark:text-white dark:hover:bg-gray-600"
+                      >
+                        <FiUser className="mr-2" /> Settings
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className="block w-full text-left px-4 py-2 text-sm text-secondary-700 hover:bg-secondary-50 flex items-center dark:text-white dark:hover:bg-gray-600"
+                      >
+                        <FiLogOut className="mr-2" /> Logout
+                      </button>
+                    </div>
+                  )}
                 </div>
               </>
             ) : (
-              <>
-                <Link to="/sign-in" className="text-secondary-600 hover:text-primary-600 transition-colors">
-                  Login
-                </Link>
-                <Link to="/sign-up" className="btn btn-primary">
-                  Get Started
-                </Link>
-              </>
+              <div className="flex items-center space-x-4">
+                <Link to="/signin" className="text-secondary-700 hover:text-primary-600 font-medium dark:text-white dark:hover:text-primary-400">Sign In</Link>
+                <Link to="/signup" className="btn btn-primary">Sign Up</Link>
+              </div>
             )}
           </div>
 
@@ -100,7 +106,7 @@ const Navbar = () => {
           <div className="md:hidden">
             <button
               onClick={toggleMenu}
-              className="text-secondary-600 hover:text-primary-600 focus:outline-none"
+              className="text-secondary-700 hover:text-primary-600 focus:outline-none dark:text-white dark:hover:text-primary-400"
             >
               {isMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
             </button>
@@ -110,99 +116,33 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white py-4 px-4 shadow-inner">
-          <div className="flex flex-col space-y-4">
+        <div className="md:hidden bg-white py-2 px-4 shadow-inner dark:bg-gray-800">
+          <div className="flex flex-col space-y-3">
             {currentUser ? (
               <>
-                <Link
-                  to="/dashboard"
-                  className="text-secondary-600 hover:text-primary-600 transition-colors"
-                  onClick={toggleMenu}
-                >
-                  Dashboard
-                </Link>
-                <Link
-                  to="/goals"
-                  className="text-secondary-600 hover:text-primary-600 transition-colors"
-                  onClick={toggleMenu}
-                >
-                  Goals
-                </Link>
-                <Link
-                  to="/transactions"
-                  className="text-secondary-600 hover:text-primary-600 transition-colors"
-                  onClick={toggleMenu}
-                >
-                  Transactions
-                </Link>
-                <Link
-                  to="/insights"
-                  className="text-secondary-600 hover:text-primary-600 transition-colors"
-                  onClick={toggleMenu}
-                >
-                  Insights
-                </Link>
-                <Link
-                  to="/budget"
-                  className="text-secondary-600 hover:text-primary-600 transition-colors"
-                  onClick={toggleMenu}
-                >
-                  <FiDollarSign className="inline mr-1" /> Budget Planning
-                </Link>
-                <Link
-                  to="/subscriptions"
-                  className="text-secondary-600 hover:text-primary-600 transition-colors"
-                  onClick={toggleMenu}
-                >
-                  <FiCreditCard className="inline mr-1" /> Subscriptions
-                </Link>
-                <Link
-                  to="/financial-health"
-                  className="text-secondary-600 hover:text-primary-600 transition-colors"
-                  onClick={toggleMenu}
-                >
-                  <FiBarChart2 className="inline mr-1" /> Financial Health
-                </Link>
-                <Link
-                  to="/recurring-transactions"
-                  className="text-secondary-600 hover:text-primary-600 transition-colors"
-                  onClick={toggleMenu}
-                >
-                  <FiRepeat className="inline mr-1" /> Recurring Transactions
-                </Link>
-                <Link
-                  to="/settings"
-                  className="text-secondary-600 hover:text-primary-600 transition-colors"
-                  onClick={toggleMenu}
-                >
-                  Settings
+                <Link to="/dashboard" className="text-secondary-700 hover:text-primary-600 font-medium py-2 dark:text-white dark:hover:text-primary-400">Dashboard</Link>
+                <Link to="/transactions" className="text-secondary-700 hover:text-primary-600 font-medium py-2 dark:text-white dark:hover:text-primary-400">Transactions</Link>
+                <Link to="/goals" className="text-secondary-700 hover:text-primary-600 font-medium py-2 dark:text-white dark:hover:text-primary-400">Goals</Link>
+                <Link to="/insights" className="text-secondary-700 hover:text-primary-600 font-medium py-2 dark:text-white dark:hover:text-primary-400">Insights</Link>
+                <Link to="/budget" className="text-secondary-700 hover:text-primary-600 font-medium py-2 dark:text-white dark:hover:text-primary-400">Budget</Link>
+                <Link to="/subscriptions" className="text-secondary-700 hover:text-primary-600 font-medium py-2 dark:text-white dark:hover:text-primary-400">Subscriptions</Link>
+                <Link to="/financial-health" className="text-secondary-700 hover:text-primary-600 font-medium py-2 dark:text-white dark:hover:text-primary-400">Financial Health</Link>
+                <Link to="/recurring-transactions" className="text-secondary-700 hover:text-primary-600 font-medium py-2 dark:text-white dark:hover:text-primary-400">Recurring</Link>
+                <div className="border-t border-secondary-100 dark:border-gray-700 my-2"></div>
+                <Link to="/settings" className="text-secondary-700 hover:text-primary-600 font-medium py-2 flex items-center dark:text-white dark:hover:text-primary-400">
+                  <FiUser className="mr-2" /> Settings
                 </Link>
                 <button
-                  onClick={() => {
-                    handleLogout();
-                    toggleMenu();
-                  }}
-                  className="flex items-center text-secondary-600 hover:text-primary-600 transition-colors"
+                  onClick={handleLogout}
+                  className="text-secondary-700 hover:text-primary-600 font-medium py-2 flex items-center w-full text-left dark:text-white dark:hover:text-primary-400"
                 >
                   <FiLogOut className="mr-2" /> Logout
                 </button>
               </>
             ) : (
               <>
-                <Link
-                  to="/sign-in"
-                  className="text-secondary-600 hover:text-primary-600 transition-colors"
-                  onClick={toggleMenu}
-                >
-                  Login
-                </Link>
-                <Link
-                  to="/sign-up"
-                  className="btn btn-primary w-full text-center"
-                  onClick={toggleMenu}
-                >
-                  Get Started
-                </Link>
+                <Link to="/signin" className="text-secondary-700 hover:text-primary-600 font-medium py-2 dark:text-white dark:hover:text-primary-400">Sign In</Link>
+                <Link to="/signup" className="text-secondary-700 hover:text-primary-600 font-medium py-2 dark:text-white dark:hover:text-primary-400">Sign Up</Link>
               </>
             )}
           </div>

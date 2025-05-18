@@ -15,16 +15,33 @@
   --glass-border: rgba(255, 255, 255, 0.18);
   --card-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
   --soft-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.05);
+  
+  /* Dark mode variables */
+  --dark-bg: #121212;
+  --dark-card-bg: #1e1e1e;
+  --dark-border: #333;
+  --dark-text: #e0e0e0;
+  --dark-glass-bg: rgba(30, 30, 30, 0.7);
+  --dark-card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 }
 
 body {
-  @apply bg-slate-50 text-slate-800 font-sans;
+  @apply bg-slate-50 text-slate-800 font-sans transition-colors duration-200;
   font-family: 'Inter', sans-serif;
   background-image: 
     radial-gradient(circle at 10% 20%, rgba(14, 165, 233, 0.05) 0%, transparent 20%),
     radial-gradient(circle at 90% 80%, rgba(99, 102, 241, 0.05) 0%, transparent 20%),
     radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.9) 0%, transparent 100%);
   background-attachment: fixed;
+}
+
+/* Dark mode styles */
+.dark body {
+  @apply bg-gray-900 text-gray-100;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(14, 165, 233, 0.02) 0%, transparent 20%),
+    radial-gradient(circle at 90% 80%, rgba(99, 102, 241, 0.02) 0%, transparent 20%),
+    radial-gradient(circle at 50% 50%, rgba(18, 18, 18, 0.9) 0%, transparent 100%);
 }
 
 .container {
@@ -36,6 +53,11 @@ body {
   @apply inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium transition-all duration-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   transform: translateY(0);
+}
+
+.dark .btn {
+  @apply focus:ring-offset-gray-900;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -1px rgba(0, 0, 0, 0.1);
 }
 
 .btn:hover {
@@ -78,11 +100,13 @@ body {
   transform: translateY(-5px);
 }
 
+.dark .card {
+  @apply bg-gray-800 border-gray-700 shadow-xl;
+}
+
 /* Card with gradient border */
 .card-gradient-border {
-  @apply p-6 bg-white rounded-xl relative overflow-hidden;
-  box-shadow: var(--soft-shadow);
-  position: relative;
+  @apply bg-white rounded-xl shadow-md overflow-hidden border border-slate-100 transition-colors duration-200;
 }
 
 .card-gradient-border::before {
