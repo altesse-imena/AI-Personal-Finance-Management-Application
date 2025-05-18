@@ -17,6 +17,12 @@ import Insights from './pages/Insights';
 import Settings from './pages/Settings';
 import LandingPage from './pages/LandingPage';
 
+// Import new feature pages
+import Budget from './pages/Budget';
+import Subscriptions from './pages/Subscriptions';
+import FinancialHealth from './pages/FinancialHealth';
+import RecurringTransactions from './pages/RecurringTransactions';
+
 
 
 function App() {
@@ -92,6 +98,40 @@ function App() {
             element={
               <PrivateRoute>
                 <Settings />
+              </PrivateRoute>
+            } 
+          />
+          
+          {/* New features */}
+          <Route 
+            path="/budget" 
+            element={
+              <PrivateRoute>
+                <Budget />
+              </PrivateRoute>
+            } 
+          />
+          <Route 
+            path="/subscriptions" 
+            element={
+              <PrivateRoute>
+                <Subscriptions />
+              </PrivateRoute>
+            } 
+          />
+          <Route 
+            path="/financial-health" 
+            element={
+              <PrivateRoute>
+                <FinancialHealth />
+              </PrivateRoute>
+            } 
+          />
+          <Route 
+            path="/recurring-transactions" 
+            element={
+              <PrivateRoute>
+                <RecurringTransactions />
               </PrivateRoute>
             } 
           />

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FiMenu, FiX, FiUser, FiLogOut } from 'react-icons/fi';
+import { FiMenu, FiX, FiUser, FiLogOut, FiDollarSign, FiCreditCard, FiBarChart2, FiRepeat } from 'react-icons/fi';
 import { useAuth } from '../contexts/AuthContext';
 import Logo from './Logo';
 
@@ -47,6 +47,25 @@ const Navbar = () => {
                 <Link to="/insights" className="text-secondary-600 hover:text-primary-600 transition-colors">
                   Insights
                 </Link>
+                <div className="relative group">
+                  <button className="flex items-center text-secondary-600 hover:text-primary-600 transition-colors">
+                    More
+                  </button>
+                  <div className="absolute left-0 w-56 mt-2 py-2 bg-white rounded-md shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+                    <Link to="/budget" className="flex items-center px-4 py-2 text-sm text-secondary-700 hover:bg-secondary-100">
+                      <FiDollarSign className="mr-2" /> Budget Planning
+                    </Link>
+                    <Link to="/subscriptions" className="flex items-center px-4 py-2 text-sm text-secondary-700 hover:bg-secondary-100">
+                      <FiCreditCard className="mr-2" /> Subscriptions
+                    </Link>
+                    <Link to="/financial-health" className="flex items-center px-4 py-2 text-sm text-secondary-700 hover:bg-secondary-100">
+                      <FiBarChart2 className="mr-2" /> Financial Health
+                    </Link>
+                    <Link to="/recurring-transactions" className="flex items-center px-4 py-2 text-sm text-secondary-700 hover:bg-secondary-100">
+                      <FiRepeat className="mr-2" /> Recurring Transactions
+                    </Link>
+                  </div>
+                </div>
                 <div className="relative group">
                   <button className="flex items-center text-secondary-600 hover:text-primary-600 transition-colors">
                     <FiUser className="mr-1" />
@@ -122,6 +141,34 @@ const Navbar = () => {
                   onClick={toggleMenu}
                 >
                   Insights
+                </Link>
+                <Link
+                  to="/budget"
+                  className="text-secondary-600 hover:text-primary-600 transition-colors"
+                  onClick={toggleMenu}
+                >
+                  <FiDollarSign className="inline mr-1" /> Budget Planning
+                </Link>
+                <Link
+                  to="/subscriptions"
+                  className="text-secondary-600 hover:text-primary-600 transition-colors"
+                  onClick={toggleMenu}
+                >
+                  <FiCreditCard className="inline mr-1" /> Subscriptions
+                </Link>
+                <Link
+                  to="/financial-health"
+                  className="text-secondary-600 hover:text-primary-600 transition-colors"
+                  onClick={toggleMenu}
+                >
+                  <FiBarChart2 className="inline mr-1" /> Financial Health
+                </Link>
+                <Link
+                  to="/recurring-transactions"
+                  className="text-secondary-600 hover:text-primary-600 transition-colors"
+                  onClick={toggleMenu}
+                >
+                  <FiRepeat className="inline mr-1" /> Recurring Transactions
                 </Link>
                 <Link
                   to="/settings"
