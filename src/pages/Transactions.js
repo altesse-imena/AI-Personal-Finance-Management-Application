@@ -108,11 +108,11 @@ const Transactions = () => {
   };
 
   return (
-    <div className="bg-secondary-50 min-h-screen py-8">
+    <div className="bg-secondary-50 dark:bg-gray-900 min-h-screen py-8 transition-colors duration-200">
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row justify-between items-center mb-8">
           <div className="flex items-center">
-            <h1 className="text-3xl font-bold text-secondary-900">Transactions</h1>
+            <h1 className="text-3xl font-bold text-secondary-900 dark:text-white mb-8">Transactions</h1>
             <button 
               onClick={handleRefresh} 
               className="ml-4 p-2 rounded-full hover:bg-secondary-100 transition-colors"
@@ -136,69 +136,74 @@ const Transactions = () => {
         </div>
 
         {/* Filters */}
-        <div className="card bg-white rounded-xl shadow-stripe-sm mb-8">
+        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 mb-8 transition-colors duration-200">
           <div className="flex items-center mb-4">
             <FiFilter className="text-secondary-600 mr-2" />
-            <h2 className="text-xl font-semibold text-secondary-900">Filters</h2>
+            <h2 className="text-xl font-semibold text-secondary-900 dark:text-gray-300">Filters</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
             <div>
-              <label className="block text-sm font-medium text-secondary-700 mb-1">Type</label>
-              <select
-                name="type"
-                value={filters.type}
-                onChange={handleFilterChange}
-                className="input w-full"
-              >
-                <option value="all">All Types</option>
-                <option value="income">Income</option>
-                <option value="expense">Expense</option>
-              </select>
+              <label className="block text-sm font-medium text-secondary-700 dark:text-gray-300 mb-1">Type</label>
+              <div className="relative">
+                <select
+                  value={filters.type}
+                  onChange={(e) => setFilters({...filters, type: e.target.value})}
+                  className="w-full appearance-none pl-10 pr-10 py-2 rounded-lg border border-secondary-200 dark:border-gray-700 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                >
+                  <option value="all">All Types</option>
+                  <option value="income">Income</option>
+                  <option value="expense">Expense</option>
+                </select>
+              </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-secondary-700 mb-1">Category</label>
-              <select
-                name="category"
-                value={filters.category}
-                onChange={handleFilterChange}
-                className="input w-full"
-              >
-                <option value="all">All Categories</option>
-                {categories.map(category => (
-                  <option key={category} value={category}>{category}</option>
-                ))}
-              </select>
+              <label className="block text-sm font-medium text-secondary-700 dark:text-gray-300 mb-1">Category</label>
+              <div className="relative">
+                <select
+                  value={filters.category}
+                  onChange={(e) => setFilters({...filters, category: e.target.value})}
+                  className="w-full appearance-none pl-10 pr-10 py-2 rounded-lg border border-secondary-200 dark:border-gray-700 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                >
+                  <option value="all">All Categories</option>
+                  {categories.map(category => (
+                    <option key={category} value={category}>{category}</option>
+                  ))}
+                </select>
+              </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-secondary-700 mb-1">Start Date</label>
-              <input
-                type="date"
-                name="startDate"
-                value={filters.startDate}
-                onChange={handleFilterChange}
-                className="input w-full"
-              />
+              <label className="block text-sm font-medium text-secondary-700 dark:text-gray-300 mb-1">Start Date</label>
+              <div className="relative">
+                <input
+                  type="date"
+                  value={filters.startDate}
+                  onChange={(e) => setFilters({...filters, startDate: e.target.value})}
+                  className="w-full pl-10 pr-4 py-2 rounded-lg border border-secondary-200 dark:border-gray-700 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                />
+              </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-secondary-700 mb-1">End Date</label>
-              <input
-                type="date"
-                name="endDate"
-                value={filters.endDate}
-                onChange={handleFilterChange}
-                className="input w-full"
-              />
+              <label className="block text-sm font-medium text-secondary-700 dark:text-gray-300 mb-1">End Date</label>
+              <div className="relative">
+                <input
+                  type="date"
+                  value={filters.endDate}
+                  onChange={(e) => setFilters({...filters, endDate: e.target.value})}
+                  className="w-full pl-10 pr-4 py-2 rounded-lg border border-secondary-200 dark:border-gray-700 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                />
+              </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-secondary-700 mb-1">Search</label>
-              <input
-                type="text"
-                name="searchTerm"
-                value={filters.searchTerm}
-                onChange={handleFilterChange}
-                placeholder="Search description or category"
-                className="input w-full"
-              />
+              <label className="block text-sm font-medium text-secondary-700 dark:text-gray-300 mb-1">Search</label>
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search transactions..."
+                  value={filters.searchTerm}
+                  onChange={(e) => setFilters({...filters, searchTerm: e.target.value})}
+                  className="w-full pl-10 pr-4 py-2 rounded-lg border border-secondary-200 dark:border-gray-700 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -212,54 +217,41 @@ const Transactions = () => {
             <p>{error}</p>
           </div>
         ) : filteredTransactions.length === 0 ? (
-          <div className="card bg-white rounded-xl shadow-stripe-sm p-8 text-center">
-            <p className="text-xl text-secondary-600">No transactions found matching your filters.</p>
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-8 text-center mb-8 transition-colors duration-200">
+            <p className="text-xl text-secondary-600 dark:text-gray-300">No transactions found matching your filters.</p>
           </div>
         ) : (
           <>
             {/* Transactions Table */}
-            <div className="card bg-white rounded-xl shadow-stripe-sm overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm overflow-hidden mb-6 transition-colors duration-200">
               <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-secondary-200">
-                  <thead className="bg-secondary-50">
+                <table className="min-w-full divide-y divide-secondary-200 dark:divide-gray-700">
+                  <thead className="bg-secondary-50 dark:bg-gray-700">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider">
-                        Date
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider">
-                        Description
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider">
-                        Category
-                      </th>
-                      <th className="px-6 py-3 text-right text-xs font-medium text-secondary-500 uppercase tracking-wider">
-                        Amount
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-secondary-500 uppercase tracking-wider">
-                        Type
-                      </th>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-secondary-500 dark:text-gray-300 uppercase tracking-wider">Date</th>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-secondary-500 dark:text-gray-300 uppercase tracking-wider">Description</th>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-secondary-500 dark:text-gray-300 uppercase tracking-wider">Category</th>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-secondary-500 dark:text-gray-300 uppercase tracking-wider">Type</th>
+                      <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-secondary-500 dark:text-gray-300 uppercase tracking-wider">Amount</th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-secondary-100">
+                  <tbody className="bg-white dark:bg-gray-800 divide-y divide-secondary-100 dark:divide-gray-700">
                     {currentItems.map((transaction) => (
                       <tr key={transaction.id} className="hover:bg-secondary-50">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-secondary-600">
-                          {new Date(transaction.date).toLocaleDateString()}
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-secondary-900 dark:text-white">{new Date(transaction.date).toLocaleDateString()}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-secondary-900 dark:text-white">{transaction.description}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-secondary-900 dark:text-white">
+                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-secondary-100 dark:bg-gray-700 text-secondary-800 dark:text-gray-300">
+                            {transaction.category}
+                          </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-secondary-900">
-                          {transaction.description}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-secondary-600">
-                          {transaction.category}
-                        </td>
-                        <td className={`px-6 py-4 whitespace-nowrap text-sm font-medium text-right ${transaction.type === 'income' ? 'text-success' : 'text-danger'}`}>
-                          {transaction.type === 'income' ? '+' : '-'}
-                          ${transaction.amount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-secondary-600">
-                          <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${transaction.type === 'income' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-secondary-900 dark:text-white">
+                          <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${transaction.type === 'income' ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400' : 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-400'}`}>
                             {transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1)}
                           </span>
+                        </td>
+                        <td className={`px-6 py-4 whitespace-nowrap text-sm font-medium text-right ${transaction.type === 'income' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+                          {transaction.type === 'income' ? '+' : '-'}${Math.abs(transaction.amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                         </td>
                       </tr>
                     ))}
@@ -270,15 +262,15 @@ const Transactions = () => {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <div className="flex justify-between items-center mt-6">
-                <div className="text-sm text-secondary-600">
+              <div className="flex justify-between items-center">
+                <div className="text-sm text-secondary-700 dark:text-gray-300">
                   Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, filteredTransactions.length)} of {filteredTransactions.length} transactions
                 </div>
                 <div className="flex space-x-2">
                   <button
                     onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                     disabled={currentPage === 1}
-                    className="p-2 rounded-md border border-secondary-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="p-2 rounded-md border border-secondary-300 dark:border-gray-700 dark:bg-gray-700 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   >
                     <FiChevronLeft className="text-secondary-600" />
                   </button>
